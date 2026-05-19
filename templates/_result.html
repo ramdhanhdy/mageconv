@@ -1,58 +1,87 @@
 {% if error %}
-  <div class="bg-red-50 border border-red-200 text-red-700 rounded-md p-4">
-    {{ error }}
+  <div class="border border-blood text-blood p-4 flex items-start gap-3">
+    <span class="stamp stamp-blood">Error</span>
+    <div class="text-[13px] flex-1">{{ error }}</div>
   </div>
 {% endif %}
 
 {% if results %}
-  <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-lg font-semibold">
-        Converted {{ count }} file{{ '' if count == 1 else 's' }}
-      </h2>
+  <article class="border border-ink">
+    <!-- HEAD STRIP -->
+    <div class="flex items-end justify-between gap-4 flex-wrap px-5 py-3 border-b border-ink bg-paper2/60">
+      <div class="flex items-end gap-4">
+        <div class="num-huge serif" style="font-size: clamp(54px, 7vw, 84px);">03</div>
+        <div class="pb-2">
+          <div class="text-[10px] tracking-[0.22em] uppercase opacity-70">filed &mdash; receipts</div>
+          <div class="serif italic" style="font-size: 22px; line-height: 1;">
+            {{ count }} {{ 'image' if count == 1 else 'images' }}, delivered.
+          </div>
+        </div>
+      </div>
       {% if token %}
-        <a href="/download/{{ token }}"
-           class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-3 py-2 rounded-md text-sm">
-          Download ZIP
+        <a href="/download/{{ token }}" class="btn-slab">
+          Take the ZIP <span class="arrow-mono">&darr;</span>
         </a>
       {% endif %}
     </div>
+
+    <!-- LEDGER -->
     <div class="overflow-x-auto">
-      <table class="min-w-full text-sm">
-        <thead class="text-left text-slate-500 border-b border-slate-200">
-          <tr>
-            <th class="py-2 pr-4">Original</th>
-            <th class="py-2 pr-4">Output</th>
-            <th class="py-2 pr-4">Size</th>
+      <table class="min-w-full">
+        <thead>
+          <tr class="text-left text-[10px] tracking-[0.22em] uppercase border-b border-ink">
+            <th class="px-5 py-2 w-10">#</th>
+            <th class="px-5 py-2">Was</th>
+            <th class="px-5 py-2">Now</th>
+            <th class="px-5 py-2 text-right">Mass</th>
           </tr>
         </thead>
         <tbody>
         {% for r in results %}
-          <tr class="border-b border-slate-100">
-            <td class="py-2 pr-4 text-slate-700">{{ r.original }}</td>
-            <td class="py-2 pr-4 font-medium">{{ r.name }}</td>
-            <td class="py-2 pr-4 text-slate-600">
-              {{ r.original_size }} &rarr; {{ r.new_size }}
+          <tr class="border-b border-ink/10 hover:bg-paper2/60">
+            <td class="px-5 py-2.5 align-top text-[11px] opacity-60 tabular-nums">{{ '%02d' % loop.index }}.</td>
+            <td class="px-5 py-2.5 align-top text-[12px] opacity-70 truncate max-w-[260px]" title="{{ r.original }}">{{ r.original }}</td>
+            <td class="px-5 py-2.5 align-top text-[12px] font-semibold truncate max-w-[260px]" title="{{ r.name }}">{{ r.name }}</td>
+            <td class="px-5 py-2.5 align-top text-right text-[12px] tabular-nums whitespace-nowrap">
+              <span class="opacity-60">{{ r.original_size }}</span>
+              <span class="text-blood mx-1.5">&rarr;</span>
+              <span class="font-bold">{{ r.new_size }}</span>
             </td>
           </tr>
         {% endfor %}
         </tbody>
       </table>
     </div>
-  </div>
+
+    <!-- STAMP -->
+    <div class="px-5 py-3 border-t border-ink flex items-center justify-between text-[10px] tracking-[0.22em] uppercase">
+      <span class="opacity-70">Processed locally &mdash; nothing transmitted.</span>
+      <span class="stamp stamp-blood">Approved</span>
+    </div>
+  </article>
 {% endif %}
 
 {% if failures %}
-  <div class="mt-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-md p-4">
-    <p class="font-semibold mb-2">Failed:</p>
-    <ul class="list-disc ml-5">
-      {% for f in failures %}<li>{{ f.name }} - {{ f.error }}</li>{% endfor %}
+  <div class="mt-6 border border-ink">
+    <div class="flex items-center gap-3 px-5 py-2 border-b border-ink">
+      <span class="stamp stamp-blood">Refused</span>
+      <span class="text-[10px] tracking-[0.22em] uppercase opacity-70">{{ failures|length }} item{{ '' if failures|length == 1 else 's' }} would not yield</span>
+    </div>
+    <ul class="divide-y divide-ink/10">
+      {% for f in failures %}
+        <li class="px-5 py-2.5 flex items-baseline gap-4">
+          <span class="text-[11px] opacity-60 tabular-nums">{{ '%02d' % loop.index }}.</span>
+          <span class="text-[12px] font-semibold">{{ f.name }}</span>
+          <span class="text-[12px] opacity-70 ml-auto">{{ f.error }}</span>
+        </li>
+      {% endfor %}
     </ul>
   </div>
 {% endif %}
 
 {% if skipped %}
-  <div class="mt-4 bg-slate-50 border border-slate-200 text-slate-700 rounded-md p-4 text-sm">
-    Skipped (unsupported/empty): {{ skipped | join(", ") }}
+  <div class="mt-6 px-4 py-2 border-l-2 border-ink text-[11px] tracking-[0.04em]">
+    <span class="text-[10px] tracking-[0.22em] uppercase opacity-70 mr-2">Skipped &mdash;</span>
+    <span class="opacity-80">{{ skipped | join("  ·  ") }}</span>
   </div>
 {% endif %}
