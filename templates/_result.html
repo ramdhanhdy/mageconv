@@ -1,0 +1,58 @@
+{% if error %}
+  <div class="bg-red-50 border border-red-200 text-red-700 rounded-md p-4">
+    {{ error }}
+  </div>
+{% endif %}
+
+{% if results %}
+  <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold">
+        Converted {{ count }} file{{ '' if count == 1 else 's' }}
+      </h2>
+      {% if token %}
+        <a href="/download/{{ token }}"
+           class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-3 py-2 rounded-md text-sm">
+          Download ZIP
+        </a>
+      {% endif %}
+    </div>
+    <div class="overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead class="text-left text-slate-500 border-b border-slate-200">
+          <tr>
+            <th class="py-2 pr-4">Original</th>
+            <th class="py-2 pr-4">Output</th>
+            <th class="py-2 pr-4">Size</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for r in results %}
+          <tr class="border-b border-slate-100">
+            <td class="py-2 pr-4 text-slate-700">{{ r.original }}</td>
+            <td class="py-2 pr-4 font-medium">{{ r.name }}</td>
+            <td class="py-2 pr-4 text-slate-600">
+              {{ r.original_size }} &rarr; {{ r.new_size }}
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endif %}
+
+{% if failures %}
+  <div class="mt-4 bg-amber-50 border border-amber-200 text-amber-800 rounded-md p-4">
+    <p class="font-semibold mb-2">Failed:</p>
+    <ul class="list-disc ml-5">
+      {% for f in failures %}<li>{{ f.name }} - {{ f.error }}</li>{% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+{% if skipped %}
+  <div class="mt-4 bg-slate-50 border border-slate-200 text-slate-700 rounded-md p-4 text-sm">
+    Skipped (unsupported/empty): {{ skipped | join(", ") }}
+  </div>
+{% endif %}
