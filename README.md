@@ -1,12 +1,12 @@
 # mageconv
 
 Local-first, privacy-focused image conversion. Convert **HEIC / PNG / JPEG** to
-**WebP** (default) or **JPEG**, with proportional resizing, quality control,
+**WebP** (default), **JPEG**, or **PNG**, with proportional resizing, quality control,
 and automatic EXIF stripping. Everything runs on your machine.
 
 ## Features
 
-- **Formats:** input `.heic`/`.heif`/`.png`/`.jpg`/`.jpeg`, output `.webp` or `.jpeg`.
+- **Formats:** input `.heic`/`.heif`/`.png`/`.jpg`/`.jpeg`, output `.webp`, `.jpeg`, or `.png`.
 - **Privacy:** EXIF metadata is removed from every output.
 - **Smart resize:** `--max-width N` scales down images wider than `N`, keeping aspect ratio.
 - **Quality:** integer `1..100` for WebP/JPEG.
@@ -37,7 +37,7 @@ uv run python main.py convert ./photos --output-dir ./out -f jpeg -q 90 -w 2560 
 Options:
 
 - `--output-dir / -o` output directory (created if missing)
-- `--format / -f` `webp` (default) or `jpeg`
+- `--format / -f` `webp` (default), `jpeg`, or `png`
 - `--quality / -q` 1-100 (default 85)
 - `--max-width / -w` optional max width in pixels
 - `--recursive / -r` recurse into subdirectories

@@ -12,15 +12,15 @@
       <div class="flex items-end gap-4">
         <div class="num-huge serif" style="font-size: clamp(54px, 7vw, 84px);">03</div>
         <div class="pb-2">
-          <div class="text-[10px] tracking-[0.22em] uppercase opacity-70">filed &mdash; receipts</div>
+          <div class="text-[10px] tracking-[0.22em] uppercase opacity-70">conversion &mdash; summary</div>
           <div class="serif italic" style="font-size: 22px; line-height: 1;">
-            {{ count }} {{ 'image' if count == 1 else 'images' }}, delivered.
+            {{ count }} {{ 'image' if count == 1 else 'images' }}, completed.
           </div>
         </div>
       </div>
       {% if token %}
         <a href="/download/{{ token }}" class="btn-slab">
-          Take the ZIP <span class="arrow-mono">&darr;</span>
+          Download ZIP <span class="arrow-mono">&darr;</span>
         </a>
       {% endif %}
     </div>
@@ -33,7 +33,7 @@
             <th class="px-5 py-2 w-10">#</th>
             <th class="px-5 py-2">Was</th>
             <th class="px-5 py-2">Now</th>
-            <th class="px-5 py-2 text-right">Mass</th>
+            <th class="px-5 py-2 text-right">Size</th>
           </tr>
         </thead>
         <tbody>
@@ -64,8 +64,8 @@
 {% if failures %}
   <div class="mt-6 border border-ink">
     <div class="flex items-center gap-3 px-5 py-2 border-b border-ink">
-      <span class="stamp stamp-blood">Refused</span>
-      <span class="text-[10px] tracking-[0.22em] uppercase opacity-70">{{ failures|length }} item{{ '' if failures|length == 1 else 's' }} would not yield</span>
+      <span class="stamp stamp-blood">Failed</span>
+      <span class="text-[10px] tracking-[0.22em] uppercase opacity-70">{{ failures|length }} item{{ '' if failures|length == 1 else 's' }} failed to convert</span>
     </div>
     <ul class="divide-y divide-ink/10">
       {% for f in failures %}

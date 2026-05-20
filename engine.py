@@ -26,10 +26,10 @@ except Exception:  # pragma: no cover - optional, but listed in requirements
 SUPPORTED_INPUT_EXTS: frozenset[str] = frozenset(
     {".heic", ".heif", ".png", ".jpg", ".jpeg"}
 )
-SUPPORTED_OUTPUT_FORMATS: frozenset[str] = frozenset({"webp", "jpeg"})
+SUPPORTED_OUTPUT_FORMATS: frozenset[str] = frozenset({"webp", "jpeg", "png"})
 
-_FORMAT_TO_EXT = {"webp": ".webp", "jpeg": ".jpg"}
-_FORMAT_TO_PIL = {"webp": "WEBP", "jpeg": "JPEG"}
+_FORMAT_TO_EXT = {"webp": ".webp", "jpeg": ".jpg", "png": ".png"}
+_FORMAT_TO_PIL = {"webp": "WEBP", "jpeg": "JPEG", "png": "PNG"}
 
 
 @dataclass
@@ -82,7 +82,7 @@ def _prepare_image(
             img = background
         elif img.mode != "RGB":
             img = img.convert("RGB")
-    else:  # webp
+    else:  # webp, png
         if img.mode not in ("RGB", "RGBA"):
             img = img.convert("RGBA" if "A" in img.getbands() else "RGB")
 
@@ -98,12 +98,16 @@ def _encode(
     quality: int,
 ) -> bytes:
     buf = io.BytesIO()
-    save_kwargs: dict = {"format": _FORMAT_TO_PIL[out_format], "quality": int(quality)}
+    save_kwargs: dict = {"format": _FORMAT_TO_PIL[out_format]}
     if out_format == "jpeg":
+        save_kwargs["quality"] = int(quality)
         save_kwargs["optimize"] = True
         save_kwargs["progressive"] = True
     elif out_format == "webp":
+        save_kwargs["quality"] = int(quality)
         save_kwargs["method"] = 6
+    elif out_format == "png":
+        save_kwargs["optimize"] = True
     img.save(buf, **save_kwargs)
     return buf.getvalue()
 
