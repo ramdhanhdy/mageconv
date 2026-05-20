@@ -4,6 +4,8 @@ Local-first, privacy-focused image conversion. Convert **HEIC / PNG / JPEG** to
 **WebP** (default), **JPEG**, or **PNG**, with proportional resizing, quality control,
 and automatic EXIF stripping. Everything runs on your machine.
 
+![mageconv Web UI](assets/mageconv_ui.png)
+
 ## Features
 
 - **Formats:** input `.heic`/`.heif`/`.png`/`.jpg`/`.jpeg`, output `.webp`, `.jpeg`, or `.png`.
