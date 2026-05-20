@@ -4,6 +4,7 @@ from __future__ import annotations
 import io
 import os
 import sys
+import asyncio
 import subprocess
 from pathlib import Path
 from typing import List, Optional
@@ -132,7 +133,7 @@ async def convert_endpoint(
         for original, _ in payloads:
             failures.append({"name": original, "error": dir_error})
 
-    resolved_path = str(out_dir.resolve()) if not dir_error else None
+    resolved_path = out_dir.resolve().as_posix() if not dir_error else None
 
     return templates.TemplateResponse(
         request,
@@ -160,6 +161,37 @@ async def open_folder(folder_path: str = Form(...)):
             subprocess.Popen(['xdg-open', str(path)])
         return Response(status_code=200)
     return Response("Folder not found", status_code=400)
+
+
+@app.post("/select-dir", response_class=HTMLResponse)
+async def select_dir(output_dir: str = Form("./out")):
+    # Run the Tkinter dialog in a separate thread to prevent blocking the event loop
+    def _pick():
+        import tkinter as tk
+        from tkinter import filedialog
+        
+        root = tk.Tk()
+        root.withdraw()
+        root.attributes('-topmost', True)
+        
+        # Determine initial directory
+        init_dir = Path(output_dir).resolve()
+        if not init_dir.exists():
+            init_dir = Path.cwd()
+            
+        selected = filedialog.askdirectory(
+            initialdir=str(init_dir),
+            title="Select Output Directory"
+        )
+        root.destroy()
+        return selected
+
+    selected = await asyncio.to_thread(_pick)
+    chosen_path = Path(selected).as_posix() if selected else output_dir
+    
+    return HTMLResponse(
+        content=f'<input type="text" id="output-dir-input" name="output_dir" value="{chosen_path}" class="field-inline pr-16" placeholder="e.g. ./out" required />'
+    )
 
 
 def run(host: str = "127.0.0.1", port: int = 8000, reload: bool = False):

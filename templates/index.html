@@ -265,7 +265,17 @@
 
           <label class="block">
             <span class="block text-[10px] tracking-[0.22em] uppercase opacity-70 mb-1">Output directory</span>
-            <input type="text" name="output_dir" value="./out" class="field-inline" placeholder="e.g. ./out" required />
+            <div class="relative flex items-center">
+              <input type="text" id="output-dir-input" name="output_dir" value="./out" class="field-inline pr-16" placeholder="e.g. ./out" required />
+              <button type="button"
+                      hx-post="/select-dir"
+                      hx-include="#output-dir-input"
+                      hx-target="#output-dir-input"
+                      hx-swap="outerHTML"
+                      class="absolute right-0 bottom-[6px] px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider border border-ink hover:bg-ink hover:text-paper transition-colors duration-100">
+                Browse
+              </button>
+            </div>
           </label>
         </div>
 
