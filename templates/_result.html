@@ -18,10 +18,19 @@
           </div>
         </div>
       </div>
-      {% if token %}
-        <a href="/download/{{ token }}" class="btn-slab">
-          Download ZIP <span class="arrow-mono">&darr;</span>
-        </a>
+      {% if output_dir %}
+        <div class="flex items-center gap-4 flex-wrap">
+          <div class="text-right hidden md:block">
+            <div class="text-[9px] tracking-[0.22em] uppercase opacity-70">Saved to</div>
+            <div class="text-[11px] font-bold truncate max-w-[280px]" title="{{ output_dir }}">{{ output_dir }}</div>
+          </div>
+          <button hx-post="/open-folder"
+                  hx-vals='{"folder_path": "{{ output_dir }}"}'
+                  hx-swap="none"
+                  class="btn-slab">
+            Open Folder <span class="arrow-mono">&rarr;</span>
+          </button>
+        </div>
       {% endif %}
     </div>
 

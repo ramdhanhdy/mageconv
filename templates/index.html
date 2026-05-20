@@ -243,7 +243,7 @@
         <div class="rule mb-5"></div>
 
         <!-- FIELDS: NEWSPAPER COLUMNS -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-8 gap-y-5">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-x-8 gap-y-5">
           <label class="block">
             <span class="block text-[10px] tracking-[0.22em] uppercase opacity-70 mb-1">Format</span>
             <select name="format" class="field-inline">
@@ -261,6 +261,11 @@
           <label class="block">
             <span class="block text-[10px] tracking-[0.22em] uppercase opacity-70 mb-1">Max width &nbsp;<span class="opacity-50">(px)</span></span>
             <input type="number" name="max_width" placeholder="&mdash;" min="1" class="field-inline placeholder:opacity-40" />
+          </label>
+
+          <label class="block">
+            <span class="block text-[10px] tracking-[0.22em] uppercase opacity-70 mb-1">Output directory</span>
+            <input type="text" name="output_dir" value="./out" class="field-inline" placeholder="e.g. ./out" required />
           </label>
         </div>
 

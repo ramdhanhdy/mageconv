@@ -51,9 +51,9 @@ Options:
 uv run python main.py serve --host 127.0.0.1 --port 8000
 ```
 
-Open <http://127.0.0.1:8000>. Drag-and-drop images, pick format / quality /
-max-width, then submit via HTMX. The result panel shows a per-file summary and
-a single **Download ZIP** link with all converted images.
+Open <http://127.0.0.1:8000>. Drag-and-drop images, choose the format / quality /
+max-width / output directory, then click **Run conversion**. The converted files are saved
+directly to your local disk, and you can click the **Open Folder** button to instantly view them in your file explorer.
 
 ## Library
 
